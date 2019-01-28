@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Users extends AppCompatActivity {
+public class Users extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ListView usersListView;
     private ArrayList<String> usersList;
     private ArrayAdapter<String> arrayAdapter;
@@ -31,6 +33,7 @@ public class Users extends AppCompatActivity {
         setContentView(R.layout.activity_users);
         setTitle("Users");
         usersListView = findViewById(R.id.usersListView);
+        usersListView.setOnItemClickListener(this);
         usersList = new ArrayList<>();
         arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, usersList);
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -107,5 +110,12 @@ public class Users extends AppCompatActivity {
            });
        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(Users.this,chat.class);
+        intent.putExtra("selectedUser",usersList.get(position));
+        startActivity(intent);
     }
 }
